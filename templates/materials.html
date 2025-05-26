@@ -2,29 +2,70 @@
 {% block content %}
 <h2 class="fw-bold mb-3 mt-2">Quản lý vật tư</h2>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <!-- Form tìm kiếm -->
 <div class="card mb-4">
     <div class="card-header bg-success text-white">
         <h5 class="mb-0"><i class="fas fa-search"></i> Tìm kiếm vật tư</h5>
     </div>
     <div class="card-body">
-        <form method="GET">
+        <form method="GET" action="{{ url_for('materials') }}" class="needs-validation" novalidate>
             <div class="row g-3">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="search_code" name="search_code" 
-                               value="{{ request.args.get('search_code', '') }}" placeholder="Nhập mã hàng">
+                               value="{{ request.args.get('search_code', '') }}" placeholder="Mã hàng">
                         <label for="search_code">Mã hàng</label>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="search_name" name="search_name" 
-                               value="{{ request.args.get('search_name', '') }}" placeholder="Nhập tên hàng">
+                               value="{{ request.args.get('search_name', '') }}" placeholder="Tên hàng">
                         <label for="search_name">Tên hàng</label>
                     </div>
                 </div>
-                <div class="col-md-3">
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select class="form-control" id="search_status" name="search_status">
+                            <option value="">Tất cả</option>
+                            <option value="Còn hàng" {% if request.args.get('search_status') == 'Còn hàng' %}selected{% endif %}>Còn hàng</option>
+                            <option value="Hết hàng" {% if request.args.get('search_status') == 'Hết hàng' %}selected{% endif %}>Hết hàng</option>
+                        </select>
+                        <label for="search_status">Trạng thái</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" name="min_stock" 
+                                       value="{{ request.args.get('min_stock', '') }}" placeholder="Từ">
+                                <label>Tồn kho từ</label>
+                            </div>
+                            <span class="input-group-text">-</span>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" name="max_stock" 
+                                       value="{{ request.args.get('max_stock', '') }}" placeholder="Đến">
+                                <label>Tồn kho đến</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
                     <div class="form-floating">
                         <div class="input-group">
                             <div class="form-floating">
@@ -41,7 +82,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-floating">
                         <div class="input-group">
                             <div class="form-floating">
@@ -60,45 +101,13 @@
                 </div>
             </div>
 
-            <div class="row g-3 mt-2">
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <div class="input-group">
-                            <div class="form-floating">
-                                <input type="number" class="form-control" name="min_stock" 
-                                       value="{{ request.args.get('min_stock', '') }}" placeholder="Từ">
-                                <label>Tồn kho từ</label>
-                            </div>
-                            <span class="input-group-text">-</span>
-                            <div class="form-floating">
-                                <input type="number" class="form-control" name="max_stock" 
-                                       value="{{ request.args.get('max_stock', '') }}" placeholder="Đến">
-                                <label>Tồn kho đến</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <select class="form-control" id="search_status" name="search_status">
-                            <option value="">Tất cả</option>
-                            <option value="Còn hàng" {% if request.args.get('search_status') == 'Còn hàng' %}selected{% endif %}>Còn hàng</option>
-                            <option value="Hết hàng" {% if request.args.get('search_status') == 'Hết hàng' %}selected{% endif %}>Hết hàng</option>
-                        </select>
-                        <label for="search_status">Trạng thái</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-3 mt-2">
-                <div class="col-12 d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-success" style="width: 150px">
-                        <i class="fas fa-search"></i> Tìm kiếm
-                    </button>
-                    <a href="{{ url_for('materials') }}" class="btn btn-secondary" style="width: 150px">
-                        <i class="fas fa-undo"></i> Đặt lại
-                    </a>
-                </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+                <a href="{{ url_for('materials') }}" class="btn btn-secondary">
+                    <i class="fas fa-undo"></i> Đặt lại
+                </a>
             </div>
         </form>
     </div>
