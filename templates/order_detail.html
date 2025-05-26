@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mt-2 mb-3">Chi tiết đơn hàng #{{ transaction.id }}</h2>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h4 class="text-success fw-bold mb-4">Thông tin đơn hàng</h4>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><strong>Ngày:</strong> {{ transaction.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                <p><strong>Loại đơn hàng:</strong> {{ 'Nhập hàng' if transaction.type == 'purchase' else 'Bán hàng' }}</p>
+                <p><strong>ID nhân viên:</strong> {{ transaction.employee_id or '-' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Tên vật tư:</strong> {{ transaction.name }}</p>
+                <p><strong>Mã vật tư:</strong> {{ transaction.code }}</p>
+                <p><strong>Số lượng:</strong> {{ transaction.quantity }}</p>
+                <p><strong>Giá trị (VND):</strong> {{ transaction.value|round(2) }}</p>
+            </div>
+        </div>
+
+        {% if transaction.type == 'purchase' %}
+        <div class="mt-4">
+            <h5 class="text-success fw-bold mb-3">Thông tin nhà cung cấp</h5>
+            <p><strong>Tên nhà cung cấp:</strong> {{ transaction.supplier_name or '-' }}</p>
+            <p><strong>Số điện thoại nhà cung cấp:</strong> {{ transaction.supplier_phone or '-' }}</p>
+        </div>
+        {% else %}
+        <div class="mt-4">
+            <h5 class="text-success fw-bold mb-3">Thông tin khách hàng</h5>
+            <p><strong>Tên khách hàng:</strong> {{ transaction.customer_name or '-' }}</p>
+            <p><strong>Số điện thoại khách hàng:</strong> {{ transaction.customer_phone or '-' }}</p>
+        </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{{ url_for('orders') }}" class="btn btn-success">Quay lại danh sách đơn hàng</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

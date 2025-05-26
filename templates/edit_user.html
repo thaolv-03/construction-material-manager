@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mt-2 mb-3">Sửa thông tin người dùng</h2>
+    <a href="{{ url_for('permissions') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Quay lại
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-user-edit"></i> Thông tin người dùng</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                        <label>Tên người dùng</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select class="form-select" name="role" required>
+                            <option value="Manager" {% if user.role == 'Manager' %}selected{% endif %}>Quản lý</option>
+                            <option value="Employee" {% if user.role == 'Employee' %}selected{% endif %}>Nhân viên</option>
+                        </select>
+                        <label class="required">Vai trò</label>
+                        <div class="invalid-feedback">Vui lòng chọn vai trò</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="employee_id" value="{{ user.employee_id or '' }}" 
+                               pattern="^[A-Za-z0-9]+$" title="Chỉ cho phép chữ cái và số">
+                        <label>ID nhân viên</label>
+                        <div class="invalid-feedback">ID nhân viên chỉ được chứa chữ cái và số</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="full_name" value="{{ user.full_name or '' }}" required>
+                        <label class="required">Họ tên</label>
+                        <div class="invalid-feedback">Vui lòng nhập họ tên</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" name="phone_number" value="{{ user.phone_number or '' }}"
+                               pattern="[0-9]{10,11}" title="Số điện thoại phải có 10-11 chữ số">
+                        <label>Số điện thoại</label>
+                        <div class="invalid-feedback">Số điện thoại phải có 10-11 chữ số</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+                <a href="{{ url_for('permissions') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Hủy
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            const roleSelect = form.querySelector('select[name="role"]');
+            const employeeIdInput = form.querySelector('input[name="employee_id"]');
+            
+            if (roleSelect && employeeIdInput) {
+                if (roleSelect.value === 'Employee' && !employeeIdInput.value.trim()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    employeeIdInput.setCustomValidity('Vui lòng nhập ID nhân viên cho vai trò Nhân viên');
+                } else {
+                    employeeIdInput.setCustomValidity('');
+                }
+            }
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false)
+    })
+})();
+
+// Role change handler
+document.querySelectorAll('select[name="role"]').forEach(function(select) {
+    select.addEventListener('change', function() {
+        var form = this.closest('form');
+        var employeeIdInput = form.querySelector('input[name="employee_id"]');
+        
+        if (this.value === 'Employee') {
+            employeeIdInput.setAttribute('required', '');
+            employeeIdInput.closest('.form-floating').querySelector('label').classList.add('required');
+            employeeIdInput.setCustomValidity('');
+        } else {
+            employeeIdInput.removeAttribute('required');
+            employeeIdInput.closest('.form-floating').querySelector('label').classList.remove('required');
+            employeeIdInput.value = '';
+            employeeIdInput.setCustomValidity('');
+        }
+        
+        // Reset validation state
+        form.classList.remove('was-validated');
+    });
+});
+</script>
+{% endblock %} 

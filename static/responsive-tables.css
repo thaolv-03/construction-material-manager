@@ -1,0 +1,144 @@
+/* Desktop Table Styles */
+@media (min-width: 768px) {
+    .table-view {
+        display: block;
+    }
+    .card-view {
+        display: none;
+    }
+    .table thead {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: #d1e7dd;
+    }
+    .table tbody {
+        display: block;
+        max-height: 530px;
+        overflow-y: auto;
+    }
+    .table tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    .table th, .table td {
+        width: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle !important; 
+        padding: 12px;
+    }
+    .form-row {
+        display: flex;
+        gap: 1rem;
+    }
+    .form-row > * {
+        flex: 1;
+    }
+}
+
+/* Mobile Card Styles */
+@media (max-width: 767px) {
+    .table-view {
+        display: none;
+    }
+    .card-view {
+        display: block;
+    }
+    .data-card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        background: white;
+    }
+    .data-card .card-header {
+        background-color: #d1e7dd;
+        padding: 0.75rem;
+        border-radius: 8px 8px 0 0;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .data-card .card-body {
+        padding: 1rem;
+    }
+    .data-card .info-item {
+        margin-bottom: 0.5rem;
+    }
+    .data-card .info-item .label {
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 0.25rem;
+    }
+    .data-card .card-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #dee2e6;
+    }
+    .data-card .btn {
+        flex: 1;
+    }
+    
+    /* Form styles for mobile */
+    .form-row {
+        margin-bottom: 1rem;
+    }
+    .form-row > * {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Search form styles */
+    .search-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .search-form .form-control {
+        width: 100%;
+    }
+    .search-form .btn {
+        width: 100%;
+    }
+}
+
+/* Common styles */
+.badge {
+    padding: 0.5em 0.75em;
+    font-size: 0.875em;
+}
+
+.btn-search {
+    min-width: 150px;
+}
+
+/* Form group spacing */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25em 0.75em;
+    border-radius: 0.25rem;
+    font-weight: 500;
+}
+
+/* Responsive form controls */
+.form-control {
+    max-width: 100%;
+}
+
+/* Modal responsiveness */
+@media (max-width: 767px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    .modal-content {
+        border-radius: 0.5rem;
+    }
+} 

@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mt-2 mb-3">Danh sách đơn hàng</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<!-- Form tìm kiếm -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-search"></i> Tìm kiếm đơn hàng</h5>
+    </div>
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('orders') }}" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="search_id" name="search_id" 
+                               value="{{ search_id }}" placeholder="ID đơn hàng">
+                        <label for="search_id">ID đơn hàng</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="search_name" name="search_name" 
+                               value="{{ search_name }}" placeholder="Tên vật tư">
+                        <label for="search_name">Tên vật tư</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select class="form-control" id="search_code" name="search_code">
+                            <option value="">Tất cả</option>
+                            {% for code in material_codes %}
+                            <option value="{{ code }}" {% if search_code == code %}selected{% endif %}>{{ code }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="search_code">Mã vật tư</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="search_employee_id" name="search_employee_id" 
+                               value="{{ search_employee_id }}" placeholder="ID nhân viên">
+                        <label for="search_employee_id">ID nhân viên</label>
+                    </div>
+        </div>
+        </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-control" id="search_type" name="search_type">
+                            <option value="">Tất cả</option>
+                            <option value="purchase" {% if search_type == 'purchase' %}selected{% endif %}>Nhập hàng</option>
+                            <option value="sale" {% if search_type == 'sale' %}selected{% endif %}>Bán hàng</option>
+            </select>
+                        <label for="search_type">Loại đơn hàng</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" name="search_date_from" 
+                                       value="{{ search_date_from }}" placeholder="Từ ngày">
+                                <label>Từ ngày</label>
+                            </div>
+                            <span class="input-group-text">-</span>
+                            <div class="form-floating">
+                                <input type="date" class="form-control" name="search_date_to" 
+                                       value="{{ search_date_to }}" placeholder="Đến ngày">
+                                <label>Đến ngày</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" name="search_value_min" 
+                                       value="{{ search_value_min }}" placeholder="Từ">
+                                <label>Giá trị từ</label>
+                            </div>
+                            <span class="input-group-text">-</span>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" name="search_value_max" 
+                                       value="{{ search_value_max }}" placeholder="Đến">
+                                <label>Giá trị đến</label>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+                <a href="{{ url_for('orders') }}" class="btn btn-secondary">
+                    <i class="fas fa-undo"></i> Đặt lại
+                </a>
+        </div>
+    </form>
+    </div>
+</div>
+
+<!-- Danh sách đơn hàng -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-list"></i> Danh sách đơn hàng</h5>
+    </div>
+    <div class="card-body">
+        <!-- Table View (Desktop) -->
+        <div class="table-view">
+            <table class="table table-hover">
+    <thead class="table-success">
+        <tr>
+            <th>ID</th>
+            <th>Ngày</th>
+                        <th>Loại đơn hàng</th>
+                        <th>Tên vật tư</th>
+                        <th>Mã vật tư</th>
+                        <th>Số lượng</th>
+                        <th>ID nhân viên</th>
+                        <th>Giá trị (VND)</th>
+                        <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ 'Nhập hàng' if transaction.type == 'purchase' else 'Bán hàng' }}</td>
+            <td>{{ transaction.name }}</td>
+            <td>{{ transaction.code }}</td>
+            <td>{{ transaction.quantity }}</td>
+            <td>{{ transaction.employee_id or '-' }}</td>
+            <td>{{ transaction.value|round(2) }}</td>
+            <td>
+                            <a href="{{ url_for('order_detail', order_id=transaction.id) }}" class="btn btn-success btn-sm">
+                                <i class="fas fa-eye"></i> Chi tiết
+                            </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+        </div>
+
+        <!-- Card View (Mobile) -->
+        <div class="card-view">
+            {% for transaction in transactions %}
+            <div class="data-card">
+                <div class="card-header">
+                    <div>Đơn #{{ transaction.id }}</div>
+                    <div class="badge {% if transaction.type == 'purchase' %}bg-primary{% else %}bg-success{% endif %}">
+                        {{ 'Nhập hàng' if transaction.type == 'purchase' else 'Bán hàng' }}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-item">
+                        <div class="label">Ngày:</div>
+                        <div>{{ transaction.date.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Tên vật tư:</div>
+                        <div>{{ transaction.name }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Mã vật tư:</div>
+                        <div>{{ transaction.code }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Số lượng:</div>
+                        <div>{{ transaction.quantity }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">ID nhân viên:</div>
+                        <div>{{ transaction.employee_id or '-' }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Giá trị (VND):</div>
+                        <div>{{ transaction.value|round(2) }}</div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{{ url_for('order_detail', order_id=transaction.id) }}" class="btn btn-success w-100">
+                            <i class="fas fa-eye"></i> Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.form-floating > .form-control,
+.form-floating > .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+}
+
+.form-floating > label {
+    padding: 1rem 0.75rem;
+}
+
+.invalid-feedback {
+    font-size: 0.875em;
+}
+
+/* Table and Card View Responsive */
+.card-view {
+    display: none;
+}
+
+.table-view {
+    display: block;
+}
+
+/* Sticky Table Header */
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #d1e7dd;
+}
+
+.table tbody {
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .card-view {
+        display: block;
+    }
+
+    .table-view {
+        display: none;
+    }
+
+    .row {
+        margin: 0;
+    }
+    
+    .col-md-4,
+    .col-md-6 {
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control {
+        font-size: 16px;
+    }
+    
+    .btn {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Card styling */
+    .data-card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .data-card .card-header {
+        background-color: #f8f9fa;
+        padding: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .data-card .card-body {
+        padding: 0.75rem;
+    }
+
+    .data-card .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .data-card .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .data-card .label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .input-group {
+        flex-wrap: nowrap;
+    }
+
+    .input-group .form-floating {
+        flex: 1;
+    }
+
+    .input-group-text {
+        height: calc(3.5rem + 2px);
+        display: flex;
+        align-items: center;
+    }
+}
+</style>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false)
+    })
+})();
+</script>
+{% endblock %}

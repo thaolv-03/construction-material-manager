@@ -1,0 +1,508 @@
+/* Global Responsive Styles */
+:root {
+    --primary-color: #198754;
+    --secondary-color: #6c757d;
+    --light-bg: #f8f9fa;
+    --dark-text: #333;
+    --spacing-unit: 1rem;
+}
+
+/* Base styles */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+/* Layout */
+.main-container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    padding: 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    white-space: normal;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--light-bg);
+    padding-top: var(--spacing-unit);
+    min-width: 250px;
+    transition: all 0.3s ease;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    color: var(--dark-text);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar a i {
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar a:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.sidebar a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.sidebar a.active:hover {
+    background-color: var(--primary-color);
+    opacity: 0.95;
+}
+
+/* Mobile Sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        left: -250px;
+        height: calc(100vh - 56px);
+        z-index: 1000;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .content {
+        margin-left: 0 !important;
+    }
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+    padding: var(--spacing-unit);
+    transition: margin-left 0.3s ease;
+}
+
+/* Tables */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    min-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .table td, .table th {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Cards */
+.card {
+    margin-bottom: var(--spacing-unit);
+}
+
+/* Buttons */
+.btn {
+    white-space: nowrap;
+    padding: 0.375rem 0.75rem;
+}
+
+@media (max-width: 576px) {
+    .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Utilities */
+.w-100 {
+    width: 100%;
+}
+
+/* Alert Messages */
+.alert {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+/* Statistics and Charts */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Modal Responsiveness */
+.modal-dialog {
+    margin: 1rem;
+    max-width: 100%;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+}
+
+/* Grid System Improvements */
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+@media (max-width: 576px) {
+    .row {
+        margin-right: -10px;
+        margin-left: -10px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sidebar, .navbar {
+        display: none !important;
+    }
+    
+    .content {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* Common Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #198754;
+    color: white;
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    padding: 1rem;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Form Styles */
+.form-floating > .form-control,
+.form-floating > .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+}
+
+.form-floating > label {
+    padding: 1rem 0.75rem;
+}
+
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.invalid-feedback {
+    font-size: 0.875em;
+}
+
+/* Input Group Styles */
+.input-group {
+    flex-wrap: nowrap;
+}
+
+.input-group .form-floating {
+    flex: 1;
+}
+
+.input-group-text {
+    height: calc(3.5rem + 2px);
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn i {
+    font-size: 1rem;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #d1e7dd;
+}
+
+.table tbody {
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.table th {
+    font-weight: 600;
+    color: #198754;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5rem 0.75rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* Desktop View */
+.card-view {
+    display: none;
+}
+
+.table-view {
+    display: block;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    /* Card View */
+    .card-view {
+        display: block;
+    }
+
+    .table-view {
+        display: none;
+    }
+
+    /* Layout */
+    .row {
+        margin: 0;
+    }
+    
+    .col-md-4,
+    .col-md-6 {
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+
+    /* Form Controls */
+    .form-control {
+        font-size: 16px;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        justify-content: center;
+    }
+
+    /* Data Card */
+    .data-card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        background-color: white;
+    }
+
+    .data-card .card-header {
+        background-color: #f8f9fa;
+        padding: 0.75rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #333;
+    }
+
+    .data-card .card-body {
+        padding: 1rem;
+    }
+
+    .data-card .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        font-size: 0.9375rem;
+    }
+
+    .data-card .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .data-card .label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    /* Input Groups */
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+}
+
+/* Sidebar Styles */
+.sidebar {
+    min-width: 250px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar a {
+    padding: 0.75rem 1.25rem;
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background-color: #e9ecef;
+    color: #198754;
+}
+
+.sidebar a i {
+    width: 1.25rem;
+    text-align: center;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #198754;
+    padding: 1rem;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.navbar-brand:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+} 

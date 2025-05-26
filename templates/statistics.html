@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-3 mt-2">Thống kê</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-chart-line"></i> Tổng quan chi phí và doanh thu</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="d-flex flex-column">
+                    <span class="text-secondary mb-2">Tổng chi phí nhập hàng</span>
+                    <span class="h4 mb-0 text-success">{{ total_cost|round(2) }} VND</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex flex-column">
+                    <span class="text-secondary mb-2">Tổng doanh thu bán hàng</span>
+                    <span class="h4 mb-0 text-success">{{ total_revenue|round(2) }} VND</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex flex-column">
+                    <span class="text-secondary mb-2">Lợi nhuận ròng</span>
+                    <span class="h4 mb-0 text-success">{{ (total_revenue - total_cost)|round(2) }} VND</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    
+
+    <div class="col-12 col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Nhập hàng và bán hàng theo ngày</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-wrapper">
+                    <img src="{{ url_for('static', filename='charts/purchase_sale_by_day.png') }}" 
+                         alt="Purchase and Sale by Day Chart" 
+                         class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-boxes"></i> Mức tồn kho</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-wrapper">
+                    <img src="{{ url_for('static', filename='charts/stock_levels.png') }}" 
+                         alt="Stock Levels Chart" 
+                         class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-star"></i> Top 10 vật tư bán chạy nhất</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-wrapper">
+                    <img src="{{ url_for('static', filename='charts/best_selling.png') }}" 
+                         alt="Best Selling Materials Chart" 
+                         class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Phân phối tồn kho</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-wrapper">
+                    <img src="{{ url_for('static', filename='charts/stock_distribution.png') }}" 
+                         alt="Stock Distribution Chart" 
+                         class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 ">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-line"></i> Doanh thu bán hàng theo ngày</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-wrapper">
+                    <img src="{{ url_for('static', filename='charts/daily_revenue.png') }}" 
+                         alt="Daily Revenue Chart" 
+                         class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .chart-wrapper {
+        min-height: 250px;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mt-2 mb-3">Thêm vật tư mới</h2>
+
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-plus"></i> Thông tin vật tư mới</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('add_material') }}" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="code" name="code" placeholder="Mã hàng" required>
+                        <label for="code" class="required">Mã hàng</label>
+                        <div class="invalid-feedback">Vui lòng nhập mã hàng</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Tên hàng" required>
+                        <label for="name" class="required">Tên hàng</label>
+                        <div class="invalid-feedback">Vui lòng nhập tên hàng</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="unit" name="unit" placeholder="Đơn vị" required>
+                        <label for="unit" class="required">Đơn vị</label>
+                        <div class="invalid-feedback">Vui lòng nhập đơn vị</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="number" step="0.01" class="form-control" id="purchase_price" name="purchase_price" placeholder="Giá nhập" required>
+                        <label for="purchase_price" class="required">Giá nhập</label>
+                        <div class="invalid-feedback">Vui lòng nhập giá nhập</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="number" step="0.01" class="form-control" id="sale_price" name="sale_price" placeholder="Giá bán" required>
+                        <label for="sale_price" class="required">Giá bán</label>
+                        <div class="invalid-feedback">Vui lòng nhập giá bán</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="stock" name="stock" placeholder="Tồn kho" required>
+                        <label for="stock" class="required">Tồn kho</label>
+                        <div class="invalid-feedback">Vui lòng nhập số lượng tồn kho</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="supplier_name" name="supplier_name" placeholder="Tên nhà cung cấp">
+                        <label for="supplier_name">Tên nhà cung cấp</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" id="supplier_phone" name="supplier_phone" 
+                               placeholder="Số điện thoại nhà cung cấp" pattern="[0-9]{10,11}" 
+                               title="Số điện thoại phải có 10-11 chữ số">
+                        <label for="supplier_phone">Số điện thoại nhà cung cấp</label>
+                        <div class="invalid-feedback">Số điện thoại phải có 10-11 chữ số</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Thêm vật tư
+                </button>
+                <a href="{{ url_for('materials') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Hủy
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.form-floating > .form-control,
+.form-floating > .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+}
+
+.form-floating > label {
+    padding: 1rem 0.75rem;
+}
+
+.invalid-feedback {
+    font-size: 0.875em;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .row {
+        margin: 0;
+    }
+    
+    .col-md-4,
+    .col-md-6 {
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control {
+        font-size: 16px;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+</style>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false)
+    })
+})();
+</script>
+{% endblock %} 

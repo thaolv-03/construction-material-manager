@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2 class="text-danger mb-4">Không có quyền truy cập</h2>
+            <p class="mb-4">Bạn không có quyền truy cập trang này. Vui lòng liên hệ quản trị viên để được cấp quyền.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Quay lại trang chủ</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

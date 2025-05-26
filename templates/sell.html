@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-3 mt-2">Bán hàng</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<!-- Bảng danh sách vật tư -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-list"></i> Danh sách vật tư</h5>
+    </div>
+    <div class="card-body">
+        <!-- Table View (Desktop) -->
+        <div class="table-view">
+<table class="table table-hover">
+    <thead class="table-success">
+        <tr>
+                        <th>Mã vật tư</th>
+                        <th>Tên vật tư</th>
+                        <th>Tồn kho</th>
+                        <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for material in materials %}
+        <tr>
+            <td>{{ material.code }}</td>
+            <td>{{ material.name }}</td>
+            <td>{{ material.stock }}</td>
+            <td>{{ material.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+        </div>
+
+        <!-- Card View (Mobile) -->
+        <div class="card-view">
+            {% for material in materials %}
+            <div class="data-card">
+                <div class="card-header">
+                    <div>{{ material.name }}</div>
+                    <div class="badge bg-success">{{ material.status }}</div>
+                </div>
+                <div class="card-body">
+                    <div class="info-item">
+                        <div class="label">Mã vật tư:</div>
+                        <div>{{ material.code }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Tồn kho:</div>
+                        <div>{{ material.stock }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Form bán hàng -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-shopping-cart"></i> Thông tin bán hàng</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('sell') }}" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+            <select class="form-control" id="material_id" name="material_id" required>
+                            <option value="">Chọn vật tư</option>
+                {% for material in materials %}
+                <option value="{{ material.id }}">{{ material.name }} ({{ material.code }})</option>
+                {% endfor %}
+            </select>
+                        <label for="material_id" class="required">Vật tư</label>
+                        <div class="invalid-feedback">Vui lòng chọn vật tư</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Số lượng" required>
+                        <label for="quantity" class="required">Số lượng</label>
+                        <div class="invalid-feedback">Vui lòng nhập số lượng</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Tên khách hàng">
+                        <label for="customer_name">Tên khách hàng</label>
+                    </div>
+        </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="customer_phone" name="customer_phone" placeholder="Số điện thoại khách hàng">
+                        <label for="customer_phone">Số điện thoại khách hàng</label>
+        </div>
+    </div>
+        </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Gửi giao dịch bán hàng
+                </button>
+                <a href="{{ url_for('materials') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Hủy
+                </a>
+        </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.form-floating > .form-control,
+.form-floating > .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+}
+
+.form-floating > label {
+    padding: 1rem 0.75rem;
+}
+
+.invalid-feedback {
+    font-size: 0.875em;
+}
+
+/* Table and Card View Responsive */
+.card-view {
+    display: none;
+}
+
+.table-view {
+    display: block;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .card-view {
+        display: block;
+    }
+
+    .table-view {
+        display: none;
+    }
+
+    .row {
+        margin: 0;
+    }
+    
+    .col-md-4,
+    .col-md-6 {
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control {
+        font-size: 16px;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Card styling */
+    .data-card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .data-card .card-header {
+        background-color: #f8f9fa;
+        padding: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .data-card .card-body {
+        padding: 0.75rem;
+    }
+
+    .data-card .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .data-card .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .data-card .label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+}
+</style>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false)
+    })
+})();
+</script>
+{% endblock %}
