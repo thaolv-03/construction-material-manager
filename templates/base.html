@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" type="image/png" href="../static/inventory.png">
+    <link rel="icon" type="image/png" href="../static/icons/inventory.png">
     <style>
         html,
         body {
@@ -161,24 +161,24 @@
             {% if session.username %}
             <div class="sidebar" id="sidebar">
                 <a href="{{ url_for('materials') }}" class="{{ 'active' if request.endpoint == 'materials' }}">
-                    <img src="../static/inventory.png" class="icon-sidebar" alt=""><span>Quản lý vật tư</span>
+                    <img src="../static/icons/inventory.png" class="icon-sidebar" alt=""><span>Quản lý vật tư</span>
                 </a>
                 <a href="{{ url_for('purchase') }}" class="{{ 'active' if request.endpoint == 'purchase' }}">
-                    <img src="../static/checklist.png" class="icon-sidebar" alt=""><span>Nhập hàng</span>
+                    <img src="../static/icons/checklist.png" class="icon-sidebar" alt=""><span>Nhập hàng</span>
                 </a>
                 <a href="{{ url_for('sell') }}" class="{{ 'active' if request.endpoint == 'sell' }}">
-                    <img src="../static/sell.png" class="icon-sidebar" alt=""><span>Bán hàng</span>
+                    <img src="../static/icons/sell.png" class="icon-sidebar" alt=""><span>Bán hàng</span>
                 </a>
                 <a href="{{ url_for('orders') }}" class="{{ 'active' if request.endpoint == 'orders' }}">
-                    <img src="../static/order.png" class="icon-sidebar" alt=""><span>Danh sách đơn hàng</span>
+                    <img src="../static/icons/order.png" class="icon-sidebar" alt=""><span>Danh sách đơn hàng</span>
                 </a>
                 {% if session['role'] == 'Manager' %}
                 <a href="{{ url_for('statistics') }}" class="{{ 'active' if request.endpoint == 'statistics' }}">
-                    <img src="../static/statistics.png" class="icon-sidebar" alt=""
+                    <img src="../static/icons/statistics.png" class="icon-sidebar" alt=""
                         style="width: 25px; height: 25px; margin-right: 10px;"><span>Thống kê</span>
                 </a>
                 <a href="{{ url_for('permissions') }}" class="{{ 'active' if request.endpoint == 'permissions' }}">
-                    <img src="../static/permission.png" class="icon-sidebar" alt=""
+                    <img src="../static/icons/permission.png" class="icon-sidebar" alt=""
                         style="width: 25px; height: 25px; margin-right: 10px;"><span>Phân quyền</span>
                 </a>
                 {% endif %}
