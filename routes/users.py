@@ -34,28 +34,6 @@ def permissions():
                     flash('Thêm người dùng thành công', 'success')
             except mysql.connector.Error as err:
                 flash(f'Lỗi khi thêm người dùng: {err}', 'error')
-        elif action == 'update':
-            user_id = request.form['user_id']
-            role = request.form['role']
-            employee_id = request.form.get('employee_id')
-            full_name = request.form.get('full_name')
-            phone_number = request.form.get('phone_number')
-            try:
-                cursor.execute('SELECT employee_id FROM users WHERE id = %s', (user_id,))
-                current_employee_id = cursor.fetchone()['employee_id']
-                if not employee_id and role == 'Employee':
-                    employee_id = current_employee_id if current_employee_id else None
-                    if not employee_id:
-                        flash('Vui lòng nhập ID Nhân Viên cho vai trò Employee', 'error')
-                        return redirect(url_for('permissions'))
-                cursor.execute('''
-                    UPDATE users SET role = %s, employee_id = %s, full_name = %s, phone_number = %s WHERE id = %s
-                ''', (role, employee_id, full_name, phone_number, user_id))
-                conn.commit()
-                flash('Cập nhật vai trò và thông tin thành công', 'success')
-            except mysql.connector.Error as err:
-                flash(f'Lỗi khi cập nhật vai trò: {err}', 'error')
-                conn.rollback()
         elif action == 'delete':
             try:
                 user_id = int(request.form['user_id'])
@@ -98,9 +76,30 @@ def edit_user(user_id):
 
     if request.method == 'POST':
         role = request.form['role']
-        employee_id = request.form['employee_id'] if role == 'Employee' else None
+        # Lấy employee_id từ form và từ database
+        new_employee_id = request.form.get('employee_id')
+        cursor.execute('SELECT employee_id FROM users WHERE id = %s', (user_id,))
+        current_user = cursor.fetchone()
+        current_employee_id = current_user['employee_id'] if current_user else None
+
+        # Xử lý employee_id
+        if role == 'Employee':
+            # Nếu là Employee, bắt buộc phải có employee_id
+            if new_employee_id:
+                employee_id = new_employee_id
+            elif current_employee_id:
+                employee_id = current_employee_id
+            else:
+                flash('Vui lòng nhập ID Nhân Viên cho vai trò Employee', 'error')
+                cursor.close()
+                conn.close()
+                return redirect(url_for('edit_user', user_id=user_id))
+        else:
+            # Nếu không phải Employee, sử dụng employee_id mới nếu có, không thì giữ cái cũ
+            employee_id = new_employee_id if new_employee_id else current_employee_id
+
         full_name = request.form['full_name']
-        phone_number = request.form['phone_number']
+        phone_number = request.form.get('phone_number')
 
         try:
             cursor.execute('''

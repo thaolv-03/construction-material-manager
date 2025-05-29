@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from utils.db import init_db
 from routes.auth import login, logout, change_password
 from routes.materials import materials, add_material, edit_material, delete_material

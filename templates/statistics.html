@@ -11,19 +11,19 @@
             <div class="col-12 col-md-4">
                 <div class="d-flex flex-column">
                     <span class="text-secondary mb-2">Tổng chi phí nhập hàng</span>
-                    <span class="h4 mb-0 text-success">{{ total_cost|round(2) }} VND</span>
+                    <span class="h4 mb-0 text-success">{{ '{:,.0f}'.format(total_cost).replace(',', '.') }} VND</span>
                 </div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="d-flex flex-column">
                     <span class="text-secondary mb-2">Tổng doanh thu bán hàng</span>
-                    <span class="h4 mb-0 text-success">{{ total_revenue|round(2) }} VND</span>
+                    <span class="h4 mb-0 text-success">{{ '{:,.0f}'.format(total_revenue).replace(',', '.') }} VND</span>
                 </div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="d-flex flex-column">
                     <span class="text-secondary mb-2">Lợi nhuận ròng</span>
-                    <span class="h4 mb-0 text-success">{{ (total_revenue - total_cost)|round(2) }} VND</span>
+                    <span class="h4 mb-0 text-success">{{ '{:,.0f}'.format(total_revenue - total_cost).replace(',', '.') }} VND</span>
                 </div>
             </div>
         </div>
